@@ -52,8 +52,23 @@ __all__ = (
     "ResNetLayer",
     "SCDown",
     "TorchVision",
+    "SimFusion_3in",
 )
 
+class SimFusion_3in(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, x):
+        x_t, x_s, x_m= x
+        B, C, H, W = x_t.shape
+
+        x_s = F.interpolate(x_s, size=(H, W), mode='bilinear', align_corners=False)
+        x_m = F.interpolate(x_m, size=(H, W), mode='bilinear', align_corners=False)
+        #x_l = F.interpolate(x_l, size=(H, W), mode='bilinear', align_corners=False)
+
+        out = torch.cat([x_t, x_s, x_m], 1)
+        return out
 
 class DFL(nn.Module):
     """Integral module of Distribution Focal Loss (DFL).
