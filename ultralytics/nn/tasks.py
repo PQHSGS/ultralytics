@@ -68,6 +68,8 @@ from ultralytics.nn.modules import (
     YOLOEDetect,
     YOLOESegment,
     v10Detect,
+    SimFusion_3in,
+    dilation_block
 )
 from ultralytics.utils import DEFAULT_CFG_DICT, LOGGER, YAML, colorstr, emojis
 from ultralytics.utils.checks import check_requirements, check_suffix, check_yaml
@@ -1553,6 +1555,7 @@ def parse_model(d, ch, verbose=True):
             SCDown,
             C2fCIB,
             A2C2f,
+            dilation_block
         }
     )
     repeat_modules = frozenset(  # modules with 'repeat' arguments
@@ -1621,6 +1624,8 @@ def parse_model(d, ch, verbose=True):
             c2 = args[1] if args[3] else args[1] * 4
         elif m is torch.nn.BatchNorm2d:
             args = [ch[f]]
+        elif m is SimFusion_3in:
+            c2 = sum(ch[x] for x in f)
         elif m is Concat:
             c2 = sum(ch[x] for x in f)
         elif m in frozenset(
