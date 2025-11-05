@@ -59,6 +59,8 @@ from .block import (
     ResNetLayer,
     SCDown,
     TorchVision,
+    SimFusion_3in,
+    dilation_block
 )
 from .conv import (
     CBAM,
@@ -179,4 +181,6 @@ __all__ = (
     "YOLOEDetect",
     "YOLOESegment",
     "v10Detect",
+    "SimFusion_3in",
+    "dilation_block"
 )
